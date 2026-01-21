@@ -1,122 +1,194 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" class="h-full" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Agri Monitoring Dashboard</title>
-    <link rel="stylesheet" href="styles.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'system-ui', 'sans-serif']
+            }
+          }
+        }
+      }
+    </script>
   </head>
-  <body>
-    <div class="app">
-      <header class="app-header">
-        <div class="header-title">
-          <span class="emoji">🌾</span>
-          <div>
-            <p class="header-eyebrow">Agri Monitoring Dashboard</p>
-            <h1>BigchainDB Farm Intelligence</h1>
+  <body
+    class="h-full bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100"
+  >
+    <div id="app" class="min-h-screen" v-cloak>
+      <header
+        class="sticky top-0 z-20 border-b border-slate-200/70 bg-white/80 px-6 py-5 backdrop-blur dark:border-slate-800/80 dark:bg-slate-950/80"
+      >
+        <div
+          class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4"
+        >
+          <div class="flex items-center gap-4">
+            <div
+              class="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-100 text-2xl dark:bg-emerald-500/20"
+            >
+              🌾
+            </div>
+            <div>
+              <p class="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-500">
+                Agri Monitoring Dashboard
+              </p>
+              <h1 class="text-xl font-semibold text-slate-900 dark:text-white">
+                BigchainDB Farm Intelligence
+              </h1>
+              <p class="text-sm text-slate-500 dark:text-slate-400">
+                Live sensor intelligence &amp; secure data sharing
+              </p>
+            </div>
           </div>
-        </div>
-        <div class="header-meta">
-          <span class="env-pill">Environment: Dev</span>
-          <div class="header-actions">
-            <button class="icon-button" id="theme-toggle" aria-label="Toggle theme">
-              🌗
+          <div class="flex items-center gap-3">
+            <span
+              class="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700 dark:border-emerald-500/40 dark:bg-emerald-500/10 dark:text-emerald-300"
+            >
+              Environment: {{ environment }}
+            </span>
+            <button
+              class="flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold shadow-sm transition hover:-translate-y-0.5 hover:shadow-md dark:border-slate-800 dark:bg-slate-900"
+              @click="toggleTheme"
+              aria-label="Toggle theme"
+            >
+              <span class="text-lg">{{ themeIcon }}</span>
+              {{ themeLabel }}
             </button>
-            <div class="user-pill">
-              <span class="user-avatar">JD</span>
-              <div>
-                <p class="user-name">Jelena D.</p>
-                <p class="user-role">Farm Admin</p>
+            <div
+              class="flex items-center gap-3 rounded-full border border-slate-200 bg-white px-3 py-2 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+            >
+              <div
+                class="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-500 text-sm font-bold text-white"
+              >
+                JD
+              </div>
+              <div class="text-left">
+                <p class="text-sm font-semibold">Jelena D.</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Farm Admin</p>
               </div>
             </div>
           </div>
         </div>
       </header>
 
-      <main class="dashboard">
-        <aside class="panel left-panel">
-          <h2>Filters</h2>
-          <div class="panel-section">
-            <label class="field-label" for="farm">Farm</label>
-            <select id="farm" class="field-control">
-              <option>Danube Valley Farm</option>
-              <option>Sunrise Orchards</option>
-              <option>Green Plain Estate</option>
-            </select>
-          </div>
-          <div class="panel-section">
-            <label class="field-label" for="range">Time Range</label>
-            <select id="range" class="field-control">
-              <option>Last 7 days</option>
-              <option>Last 30 days</option>
-              <option>Custom</option>
-            </select>
-          </div>
-          <div class="panel-section">
-            <p class="section-title">Sensor Status</p>
-            <div class="chip-group">
-              <span class="chip chip-active">Active</span>
-              <span class="chip">Offline</span>
-              <span class="chip">Maintenance</span>
+      <main class="mx-auto grid max-w-7xl gap-6 px-6 py-8 lg:grid-cols-[260px_minmax(0,1fr)_260px]">
+        <aside class="space-y-6">
+          <section
+            class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+          >
+            <h2 class="text-base font-semibold">Filters</h2>
+            <div class="mt-4 space-y-4">
+              <label class="block text-xs font-semibold uppercase tracking-wide text-slate-500">
+                Farm
+              </label>
+              <select
+                class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                v-model="filters.farm"
+              >
+                <option v-for="farm in farms" :key="farm" :value="farm">{{ farm }}</option>
+              </select>
+              <label class="block text-xs font-semibold uppercase tracking-wide text-slate-500">
+                Time Range
+              </label>
+              <select
+                class="w-full rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm font-medium text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                v-model="filters.range"
+              >
+                <option v-for="range in ranges" :key="range" :value="range">{{ range }}</option>
+              </select>
             </div>
-          </div>
-          <div class="panel-section">
-            <p class="section-title">Alerts</p>
-            <div class="alert-card">
-              <strong>Soil Moisture Low</strong>
-              <p>Field A2 · 10 min ago</p>
-              <button class="ghost-button">Acknowledge</button>
+            <div class="mt-5">
+              <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Sensor Status</p>
+              <div class="mt-3 flex flex-wrap gap-2">
+                <span
+                  v-for="status in statuses"
+                  :key="status"
+                  class="rounded-full border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-500 dark:border-slate-700 dark:text-slate-300"
+                  :class="{
+                    'border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-500/40 dark:bg-emerald-500/10 dark:text-emerald-300':
+                      status === 'Active'
+                  }"
+                >
+                  {{ status }}
+                </span>
+              </div>
             </div>
-            <div class="alert-card">
-              <strong>Temperature Spike</strong>
-              <p>Greenhouse 3 · 1 hour ago</p>
-              <button class="ghost-button">Review</button>
+          </section>
+
+          <section
+            class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+          >
+            <div class="flex items-center justify-between">
+              <h2 class="text-base font-semibold">Alerts</h2>
+              <span class="text-xs font-semibold text-amber-500">{{ alerts.length }}</span>
             </div>
-          </div>
+            <div class="mt-4 space-y-4">
+              <article
+                v-for="alert in alerts"
+                :key="alert.title"
+                class="rounded-2xl border border-amber-100 bg-amber-50/70 p-4 dark:border-amber-500/20 dark:bg-amber-500/10"
+              >
+                <h3 class="text-sm font-semibold">{{ alert.title }}</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400">{{ alert.meta }}</p>
+                <button
+                  class="mt-3 inline-flex items-center justify-center rounded-lg border border-amber-200 bg-white px-3 py-1.5 text-xs font-semibold text-amber-700 shadow-sm dark:border-amber-500/40 dark:bg-transparent dark:text-amber-200"
+                >
+                  {{ alert.action }}
+                </button>
+              </article>
+            </div>
+          </section>
         </aside>
 
-        <section class="panel main-panel">
-          <div class="stats-grid">
-            <div class="stat-card">
-              <p>Active Sensors</p>
-              <h3>24</h3>
-              <span class="trend up">+3% vs last week</span>
-            </div>
-            <div class="stat-card">
-              <p>Alerts Today</p>
-              <h3>3</h3>
-              <span class="trend down">-2 from yesterday</span>
-            </div>
-            <div class="stat-card">
-              <p>Data Points</p>
-              <h3>1.2M</h3>
-              <span class="trend up">12% increase</span>
+        <section class="space-y-6">
+          <div class="grid gap-4 md:grid-cols-3">
+            <div
+              v-for="stat in stats"
+              :key="stat.title"
+              class="rounded-3xl border border-slate-200 bg-gradient-to-br from-white via-white to-emerald-50 p-5 shadow-sm dark:border-slate-800 dark:from-slate-900 dark:via-slate-900 dark:to-emerald-500/10"
+            >
+              <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                {{ stat.title }}
+              </p>
+              <p class="mt-2 text-2xl font-semibold">{{ stat.value }}</p>
+              <p class="mt-2 text-xs font-semibold" :class="stat.trendClass">{{ stat.trend }}</p>
             </div>
           </div>
 
-          <div class="grid-two">
-            <div class="card">
-              <div class="card-header">
-                <h2>Soil Moisture (%)</h2>
-                <span class="pill">Live</span>
+          <div class="grid gap-6 lg:grid-cols-2">
+            <div
+              class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+            >
+              <div class="flex items-center justify-between">
+                <h2 class="text-base font-semibold">Soil Moisture (%)</h2>
+                <span class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-200">
+                  Live
+                </span>
               </div>
-              <div class="chart-container">
-                <svg viewBox="0 0 360 160" aria-label="Soil moisture chart">
+              <div class="mt-4 rounded-2xl bg-emerald-50/60 p-4 dark:bg-emerald-500/10">
+                <svg viewBox="0 0 360 160" class="h-40 w-full" aria-label="Soil moisture chart">
                   <defs>
                     <linearGradient id="soilGradient" x1="0" x2="0" y1="0" y2="1">
-                      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.4" />
-                      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0" />
+                      <stop offset="0%" stop-color="#10b981" stop-opacity="0.4" />
+                      <stop offset="100%" stop-color="#10b981" stop-opacity="0" />
                     </linearGradient>
                   </defs>
                   <path
                     d="M10 110 L60 80 L120 95 L180 55 L240 70 L300 40 L350 65"
-                    stroke="#2563eb"
+                    stroke="#10b981"
                     stroke-width="3"
                     fill="none"
                   />
@@ -124,7 +196,7 @@
                     d="M10 110 L60 80 L120 95 L180 55 L240 70 L300 40 L350 65 L350 150 L10 150 Z"
                     fill="url(#soilGradient)"
                   />
-                  <g class="axis">
+                  <g class="text-[10px] fill-slate-500 dark:fill-slate-400">
                     <text x="10" y="155">Mon</text>
                     <text x="70" y="155">Tue</text>
                     <text x="130" y="155">Wed</text>
@@ -133,26 +205,31 @@
                     <text x="310" y="155">Sat</text>
                   </g>
                 </svg>
-                <div class="chart-legend">
+                <div class="mt-3 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
                   <span>Average: 38%</span>
                   <span>Peak: 52%</span>
                 </div>
               </div>
             </div>
-            <div class="card">
-              <div class="card-header">
-                <h2>Temperature (°C)</h2>
-                <span class="pill neutral">Stable</span>
+
+            <div
+              class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+            >
+              <div class="flex items-center justify-between">
+                <h2 class="text-base font-semibold">Temperature (°C)</h2>
+                <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                  Stable
+                </span>
               </div>
-              <div class="chart-container">
-                <svg viewBox="0 0 360 160" aria-label="Temperature chart">
+              <div class="mt-4 rounded-2xl bg-orange-50/70 p-4 dark:bg-orange-500/10">
+                <svg viewBox="0 0 360 160" class="h-40 w-full" aria-label="Temperature chart">
                   <path
                     d="M10 90 L60 70 L120 90 L180 60 L240 75 L300 55 L350 80"
                     stroke="#f97316"
                     stroke-width="3"
                     fill="none"
                   />
-                  <g class="axis">
+                  <g class="text-[10px] fill-slate-500 dark:fill-slate-400">
                     <text x="10" y="155">Mon</text>
                     <text x="70" y="155">Tue</text>
                     <text x="130" y="155">Wed</text>
@@ -161,7 +238,7 @@
                     <text x="310" y="155">Sat</text>
                   </g>
                 </svg>
-                <div class="chart-legend">
+                <div class="mt-3 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
                   <span>Average: 24°C</span>
                   <span>Peak: 29°C</span>
                 </div>
@@ -169,111 +246,130 @@
             </div>
           </div>
 
-          <div class="grid-two">
-            <div class="card">
-              <div class="card-header">
-                <h2>Farm Map</h2>
-                <button class="ghost-button">Open in GIS</button>
+          <div class="grid gap-6 lg:grid-cols-2">
+            <div
+              class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+            >
+              <div class="flex items-center justify-between">
+                <h2 class="text-base font-semibold">Farm Map</h2>
+                <button
+                  class="rounded-full border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-600 transition hover:border-emerald-300 hover:text-emerald-600 dark:border-slate-700 dark:text-slate-300"
+                >
+                  Open in GIS
+                </button>
               </div>
-              <div class="map">
+              <div class="relative mt-4 h-52 overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-200 via-emerald-100 to-sky-100 dark:from-emerald-500/20 dark:via-emerald-500/10 dark:to-sky-500/10">
                 <div class="map-grid"></div>
                 <span class="map-pin" style="top: 30%; left: 40%">📍</span>
                 <span class="map-pin" style="top: 55%; left: 65%">📍</span>
                 <span class="map-pin" style="top: 70%; left: 30%">📍</span>
-                <div class="map-label">
+                <div class="absolute bottom-4 left-4 rounded-xl border border-white/70 bg-white/90 px-3 py-2 text-xs font-semibold text-slate-700 shadow-sm dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200">
                   <p>Field A1</p>
-                  <span>6 sensors</span>
+                  <span class="text-[11px] font-medium text-slate-500 dark:text-slate-400">6 sensors</span>
                 </div>
               </div>
             </div>
-            <div class="card">
-              <div class="card-header">
-                <h2>Recent Transactions</h2>
-                <span class="pill">Audit</span>
+
+            <div
+              class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+            >
+              <div class="flex items-center justify-between">
+                <h2 class="text-base font-semibold">Recent Transactions</h2>
+                <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                  Audit Trail
+                </span>
               </div>
-              <ul class="transaction-list">
-                <li>
+              <ul class="mt-4 space-y-3">
+                <li
+                  v-for="transaction in transactions"
+                  :key="transaction.title"
+                  class="flex items-center justify-between rounded-2xl border border-slate-200 px-4 py-3 text-sm dark:border-slate-800"
+                >
                   <div>
-                    <p>Sensor reading stored</p>
-                    <span>Sensor A1-04 · 2 min ago</span>
+                    <p class="font-semibold">{{ transaction.title }}</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">{{ transaction.meta }}</p>
                   </div>
-                  <span class="status-pill success">Verified</span>
-                </li>
-                <li>
-                  <div>
-                    <p>Alert triggered</p>
-                    <span>Soil moisture · 1 hour ago</span>
-                  </div>
-                  <span class="status-pill warning">Action needed</span>
-                </li>
-                <li>
-                  <div>
-                    <p>Data shared with partner</p>
-                    <span>University Lab · 3 hours ago</span>
-                  </div>
-                  <span class="status-pill neutral">Shared</span>
+                  <span
+                    class="rounded-full px-3 py-1 text-xs font-semibold"
+                    :class="transaction.badgeClass"
+                  >
+                    {{ transaction.badge }}
+                  </span>
                 </li>
               </ul>
             </div>
           </div>
         </section>
 
-        <aside class="panel right-panel">
-          <h2>Provenance</h2>
-          <div class="panel-section">
-            <p class="section-title">Latest Block</p>
-            <div class="provenance-card">
-              <p>Block #5,102</p>
-              <span>Signed 2 min ago</span>
-              <code>tx: 0x9fe3...c12a</code>
+        <aside class="space-y-6">
+          <section
+            class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+          >
+            <h2 class="text-base font-semibold">Provenance</h2>
+            <div class="mt-4 rounded-2xl border border-emerald-100 bg-emerald-50/70 p-4 text-sm dark:border-emerald-500/20 dark:bg-emerald-500/10">
+              <p class="font-semibold">Block #5,102</p>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Signed 2 min ago</p>
+              <code class="mt-2 block text-xs text-emerald-600 dark:text-emerald-300">
+                tx: 0x9fe3...c12a
+              </code>
             </div>
-          </div>
-          <div class="panel-section">
-            <p class="section-title">Data Sharing</p>
-            <div class="share-card">
-              <p>Active Collaborators</p>
-              <h3>6</h3>
-              <button class="primary-button">Manage Access</button>
-            </div>
-          </div>
-          <div class="panel-section">
-            <p class="section-title">Sensor Insights</p>
-            <ul class="insight-list">
-              <li>
-                <span>Humidity Avg.</span>
+          </section>
+
+          <section
+            class="rounded-3xl border border-slate-200 bg-white p-6 text-center shadow-sm dark:border-slate-800 dark:bg-slate-900"
+          >
+            <h2 class="text-base font-semibold">Data Sharing</h2>
+            <p class="mt-3 text-xs text-slate-500 dark:text-slate-400">Active collaborators</p>
+            <p class="mt-2 text-3xl font-semibold">6</p>
+            <button
+              class="mt-4 w-full rounded-xl bg-emerald-500 px-4 py-2 text-sm font-semibold text-white shadow-md shadow-emerald-500/30 transition hover:-translate-y-0.5"
+            >
+              Manage Access
+            </button>
+          </section>
+
+          <section
+            class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+          >
+            <h2 class="text-base font-semibold">Sensor Insights</h2>
+            <ul class="mt-4 space-y-3 text-sm">
+              <li class="flex items-center justify-between">
+                <span class="text-slate-500 dark:text-slate-400">Humidity Avg.</span>
                 <strong>61%</strong>
               </li>
-              <li>
-                <span>pH Range</span>
+              <li class="flex items-center justify-between">
+                <span class="text-slate-500 dark:text-slate-400">pH Range</span>
                 <strong>6.2 - 6.7</strong>
               </li>
-              <li>
-                <span>Water Use</span>
+              <li class="flex items-center justify-between">
+                <span class="text-slate-500 dark:text-slate-400">Water Use</span>
                 <strong>1.4k L</strong>
               </li>
             </ul>
-          </div>
-          <div class="panel-section">
-            <p class="section-title">Upcoming Tasks</p>
-            <ul class="task-list">
-              <li>
-                <input type="checkbox" checked />
-                <span>Calibrate Sensor B2-03</span>
-              </li>
-              <li>
-                <input type="checkbox" />
-                <span>Export weekly report</span>
-              </li>
-              <li>
-                <input type="checkbox" />
-                <span>Schedule irrigation</span>
+          </section>
+
+          <section
+            class="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+          >
+            <h2 class="text-base font-semibold">Upcoming Tasks</h2>
+            <ul class="mt-4 space-y-3 text-sm">
+              <li v-for="task in tasks" :key="task.title" class="flex items-center gap-3">
+                <input
+                  type="checkbox"
+                  class="h-4 w-4 rounded border-slate-300 text-emerald-500 focus:ring-emerald-500"
+                  :checked="task.done"
+                />
+                <span :class="task.done ? 'line-through text-slate-400' : ''">
+                  {{ task.title }}
+                </span>
               </li>
             </ul>
-          </div>
+          </section>
         </aside>
       </main>
     </div>
 
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
