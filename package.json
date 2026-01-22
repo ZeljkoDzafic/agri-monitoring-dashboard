@@ -1,0 +1,36 @@
+{
+  "name": "agri-monitoring-dashboard",
+  "version": "1.0.0",
+  "description": "Vue.js dashboard for agricultural sensor data visualization using BigchainDB",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
+  },
+  "dependencies": {
+    "@mdi/font": "^7.4.47",
+    "axios": "^1.6.7",
+    "chart.js": "^4.4.1",
+    "leaflet": "^1.9.4",
+    "pinia": "^2.1.7",
+    "vue": "^3.4.15",
+    "vue-chartjs": "^5.3.0",
+    "vue-router": "^4.2.5",
+    "vuetify": "^3.5.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.3",
+    "@vue/test-utils": "^2.4.4",
+    "eslint": "^8.56.0",
+    "eslint-plugin-vue": "^9.20.1",
+    "jsdom": "^24.0.0",
+    "sass": "^1.70.0",
+    "vite": "^5.0.12",
+    "vitest": "^1.2.2"
+  }
+}

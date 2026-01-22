@@ -1,0 +1,67 @@
+// Main styles for Agricultural Dashboard
+
+// Variables
+$primary-color: #4CAF50;
+$secondary-color: #8BC34A;
+
+// Global styles
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+// Utility classes
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Chart containers
+.chart-container {
+  position: relative;
+  height: 300px;
+  width: 100%;
+}
+
+// Card hover effect
+.v-card:hover {
+  transition: box-shadow 0.2s ease;
+}
+
+// Scrollbar styling
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+// Code blocks
+code {
+  font-family: 'Fira Code', 'Courier New', monospace;
+  font-size: 0.875rem;
+}
+
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-height: 400px;
+  overflow: auto;
+}
