@@ -484,14 +484,4 @@ The dashboard follows a standard three-panel layout:
 
 MIT License
 
-## Citation
 
-```bibtex
-@article{dzafic2026bigchaindb,
-  title={BigchainDB for Precision Agriculture Data Sharing: A Feasibility Study},
-  author={D\v{z}afi\'c, \v{Z}eljko and Milosavljevi\'c, Branko and \v{C}u\v{c}ak, Mladen and Pavlovi\'c, Slobodanka},
-  journal={Future Internet},
-  year={2026},
-  publisher={MDPI}
-}
-```
